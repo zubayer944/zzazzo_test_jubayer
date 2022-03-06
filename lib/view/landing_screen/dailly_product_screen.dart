@@ -1,21 +1,25 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/common_network_image.dart';
 import 'package:zzazzo_test_jubayer/common_widgets/custom_elevated_button.dart';
 import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
 import 'package:zzazzo_test_jubayer/helper/colors.dart';
-import 'package:zzazzo_test_jubayer/view/category_screen/category_screen.dart';
+import 'package:zzazzo_test_jubayer/model/home_product_model.dart';
+import 'package:zzazzo_test_jubayer/view/product_details_screen/product_details_screen.dart';
 
 class DailyProductScreen extends StatelessWidget {
-  const DailyProductScreen({Key? key}) : super(key: key);
-
+  ProductModel productModel = ProductModel();
+  DailyProductScreen({required this.productModel, Key? key}) : super(key: key);
+  final Size size = Get.size;
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){Get.to(CategoryScreen());},
+      onTap: () {
+        Get.to( ProductDetailsScreen(productModel: productModel,));
+      },
       child: SizedBox(
-        height: 300,
-        width: 255,
+        width: 265,
         child: Card(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -28,16 +32,21 @@ class DailyProductScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Center(
-                      child: CommonNetworkImages().cachedNetworkImages(
-                          imgUrl:
-                              'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.bbc.com%2Fnews%2Ftechnology-58560011&psig=AOvVaw1g1cM3xntsdGFNFuYKQViE&ust=1646550586617000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNDK7oi1rvYCFQAAAAAdAAAAABAJ',
-                          radiusCorner: 0.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: CachedNetworkImage(
+                      imageUrl: "${productModel.image}",
+                      height: size.height * 0.35,
+                            width: size.width*0.45,
                     ),
+                        )),
                   ],
                 ),
               ),
               Positioned(top: 25, child: offerPercentage()),
-              Positioned(top: 150, child: _addToCartAndFav()),
+              Positioned(
+                  left: 10,
+                  top: 170, child: _addToCartAndFav()),
             ],
           ),
         ),
@@ -68,14 +77,15 @@ class DailyProductScreen extends StatelessWidget {
   Widget _addToCartAndFav() {
     return Container(
       width: 245,
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
       color: Colors.white.withOpacity(0.9),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+
             children: [
-              CustomElevatedButtton().customElevatedButton(
+              CustomElevatedButton().customElevatedButton(
                   onTap: () {},
                   height: 45,
                   btnName: "Add to cart",
@@ -86,25 +96,40 @@ class DailyProductScreen extends StatelessWidget {
               const SizedBox(
                 width: 10,
               ),
-              CustomElevatedButtton().customElevatedButton(
-                  onTap: () {},
-                  height: 45,
-                  btnName: "",
-                  icon: Icons.favorite_border,
-                  iconColor: offerBackgroundColor,
-                  btnBackgroundColor: offerBackgroundColor.withOpacity(0.2))
+              SizedBox(
+                height: 45,
+                child: ElevatedButton(
+                  onPressed: () {
+                    //TODO
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      primary: offerBackgroundColor.withOpacity(0.2)),
+                  child: const Center(
+                    child: Icon(
+                      Icons.favorite_border,
+                      color: offerBackgroundColor,
+                    ),
+                  ),
+                ),
+              )
+
             ],
           ),
           const SizedBox(
             height: 10,
           ),
           Text(
-            "One Plus 7T Dual Sim 8GB Ram 128Gb LTE Frosted Silver",
+            "${productModel.title}",
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: CustomFontStyle.poppins(fontWeight: FontWeight.w500),
           ),
           Text(
-            '\$ 953.00',
+            '\$ ${productModel.price}',
             style: CustomFontStyle.poppins(fontWeight: FontWeight.w700),
           ),
         ],

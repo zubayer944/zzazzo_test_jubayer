@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
+import 'package:zzazzo_test_jubayer/controller/all_category_controller.dart';
+import 'package:zzazzo_test_jubayer/controller/home_controller.dart';
 import 'package:zzazzo_test_jubayer/helper/colors.dart';
+import 'package:zzazzo_test_jubayer/model/AllCategoryModel.dart';
 import 'package:zzazzo_test_jubayer/view/category_screen/category_list_screen.dart';
-
 import 'category_product_item_screen.dart';
 
 class CategoryBackGroundScreen extends StatelessWidget {
-  const CategoryBackGroundScreen({Key? key}) : super(key: key);
+  final String? categoryName;
+  CategoryBackGroundScreen({required this.categoryName, Key? key})
+      : super(key: key);
+  final AllCategoryController _allCategoryController =
+      Get.put(AllCategoryController());
+  final HomeController _homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
+    _allCategoryController.getAllCategoryWiseProduct(
+        categoryName: categoryName);
     Size size = Get.size;
     return Center(
       child: Container(
-        // height: size.height,
+          // height: size.height,
           width: size.width * 1,
           decoration: const BoxDecoration(
             color: txtBackgroundColor,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: BorderRadius.all(Radius.circular(25)),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
@@ -33,12 +42,11 @@ class CategoryBackGroundScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                categoryListBuildBody(),
+                _categoryListBuildBody(),
                 const SizedBox(
-                  height: 20,
+                  height: 5,
                 ),
                 _categoryProductItemBuildBody(),
-
               ],
             ),
           )),
@@ -89,12 +97,15 @@ class CategoryBackGroundScreen extends StatelessWidget {
           //   ),
           value: 1,
           onChanged: (int) {},
-          items:  <DropdownMenuItem<int>>[
+          items: <DropdownMenuItem<int>>[
             DropdownMenuItem<int>(
               value: 1,
-              child: Text("Sort by",style: CustomFontStyle.poppins(
-                color: searchBoxBackgroundColor,
-              ),),
+              child: Text(
+                "Sort by",
+                style: CustomFontStyle.poppins(
+                  color: searchBoxBackgroundColor,
+                ),
+              ),
             ),
             const DropdownMenuItem<int>(
               value: 2,
@@ -104,39 +115,65 @@ class CategoryBackGroundScreen extends StatelessWidget {
         ));
   }
 
-  Widget categoryListBuildBody(){
-    return SizedBox(
-      height: 40,
-      width: 355,
-      child: ListView.builder(
-        shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          itemBuilder: (context,i){
-        return  const CategoryListScreen();
-      }),
-    );
+  Widget _categoryListBuildBody() {
+    return Obx(() {
+      if (_homeController.categoryDataLoaded.value == false) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (_homeController.categoryDataLoaded.value == true &&
+          _homeController.categoryList.isEmpty) {
+        return const Center(
+          child: Text("No Data Found"),
+        );
+      } else {
+        return SizedBox(
+          height: 40,
+          width: 355,
+          child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: _homeController.categoryList.length,
+              itemBuilder: (context, index) {
+                return CategoryListScreen(
+                  categoryList: _homeController.categoryList[index],
+                );
+              }),
+        );
+      }
+    });
   }
 
-  Widget _categoryProductItemBuildBody(){
+  Widget _categoryProductItemBuildBody() {
     Size size = Get.size;
-    return  SizedBox(
-      height: size.height,
-      child: GridView.builder(
-        scrollDirection: Axis.vertical,
-        physics: const BouncingScrollPhysics(),
-        itemCount:5,
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2),
-        itemBuilder: (context, i) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2.0,vertical: 10),
-            child: CategoryProductItemScreen(),
-          );
-        },
-      ));
-
+    return Obx(() {
+      if (_allCategoryController.categoryWiseDataLoaded.value == false) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (_allCategoryController.categoryWiseDataLoaded.value == true &&
+          _allCategoryController.allCategoryWiseProductList.isEmpty) {
+        return const Center(
+          child: Text("No Data Found"),
+        );
+      } else {
+        return GridView.count(
+          childAspectRatio: .60,
+          crossAxisCount: 2,
+          crossAxisSpacing: 2.0,
+          mainAxisSpacing: 2.0,
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          primary: false,
+          controller: ScrollController(keepScrollOffset: false),
+          children: _allCategoryController.allCategoryWiseProductList
+              .map((CategoryWiseProductModel value) {
+            return CategoryProductItemScreen(
+              allCategoryProductModel: value,
+            );
+          }).toList(),
+        );
+      }
+    });
   }
-
 }

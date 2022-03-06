@@ -37,6 +37,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   carousel_slider: ^4.0.0
   extended_image: ^4.2.1
+  http: ^0.13.3
 
 
 

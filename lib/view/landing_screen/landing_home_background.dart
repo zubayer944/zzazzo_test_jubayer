@@ -1,12 +1,17 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
+import 'package:zzazzo_test_jubayer/controller/home_controller.dart';
 import 'package:zzazzo_test_jubayer/helper/colors.dart';
 import 'package:zzazzo_test_jubayer/view/landing_screen/popular_category_screen.dart';
 import 'dailly_product_screen.dart';
 
 class LandingHomeBackground extends StatelessWidget {
-  const LandingHomeBackground({Key? key}) : super(key: key);
+  LandingHomeBackground({Key? key}) : super(key: key);
+  final HomeController _homeController = Get.put(HomeController());
+  final Size size = Get.size;
 
   @override
   Widget build(BuildContext context) {
@@ -20,36 +25,26 @@ class LandingHomeBackground extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _homeProfileView(),
-                const SizedBox(
-                  height: 25,
-                ),
-                _searchTextBox(),
-                const SizedBox(
-                  height: 20,
-                ),
-                _productsHeader(
-                  itemName:  "Daily Deals",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                _dailyProductDealsBuildBody(),
-                const SizedBox(
-                  height: 20,
-                ),
-                _productsHeader(
-                  itemName:  "Popular Category",
-                ),
-                const SizedBox(height: 15,),
-                _popularCategoryBuildBody()
-              ],
-            ),
-          )),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _homeProfileView(),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  _searchTextBox(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _dailyProductDealsBuildBody(),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  _popularCategoryBuildBody()
+                ],
+              ))),
     );
   }
 
@@ -72,8 +67,9 @@ class LandingHomeBackground extends StatelessWidget {
                 Text(
                   "Good Morning",
                   style: CustomFontStyle.poppins(
-                    color: searchBoxBackgroundColor,
-                      fontSize: 12, fontWeight: FontWeight.w500),
+                      color: searchBoxBackgroundColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500),
                 ),
                 Text(
                   "Jubayer Bin Montasir",
@@ -108,12 +104,12 @@ class LandingHomeBackground extends StatelessWidget {
         ));
   }
 
-  Widget _productsHeader({String?itemName}) {
+  Widget _productsHeader({String? itemName}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-        itemName.toString() ,
+          itemName.toString(),
           style: CustomFontStyle.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w700,
@@ -149,34 +145,80 @@ class LandingHomeBackground extends StatelessWidget {
   }
 
   Widget _dailyProductDealsBuildBody() {
-    return SizedBox(
-      height: 295,
-      width: 355,
-      child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          itemBuilder: (context, i) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: DailyProductScreen(),
-            );
-          }),
-    );
+    return Obx(() {
+      if (_homeController.productDataLoaded.value == false) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (_homeController.productDataLoaded.value == true &&
+          _homeController.productList.isEmpty) {
+        return const Center(
+          child: Text("No Product Found"),
+        );
+      } else {
+        return Column(
+          children: [
+            _productsHeader(
+              itemName: "Daily deals",
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            CarouselSlider(
+              options: CarouselOptions(
+                  height: size.width * 0.80,
+                  autoPlay: true,
+                  viewportFraction: 0.75,
+                  onPageChanged: (index, reason) {
+                    _homeController.sliderIndex.value = index;
+                  }),
+              items: _homeController.productList.map((url) {
+                return DailyProductScreen(productModel: url);
+              }).toList(),
+            ),
+          ],
+        );
+      }
+    });
   }
 
-  Widget _popularCategoryBuildBody(){
-    return SizedBox(height: 150,
-    width: 355,
-    child: ListView.builder(
-        itemCount: 3,
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context,i){
-      return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
-        child: PopularCategoryScreen(),
-      );
-    }),);
+  Widget _popularCategoryBuildBody() {
+    return Obx(() {
+      if (_homeController.categoryDataLoaded.value == false) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (_homeController.categoryDataLoaded.value == true &&
+          _homeController.categoryList.isEmpty) {
+        return const Center(
+          child: Text("No Category Found"),
+        );
+      } else {
+        return Column(
+          children: [
+            _productsHeader(
+              itemName: "Popular Category",
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            CarouselSlider(
+              options: CarouselOptions(
+                  height: size.height * 0.20,
+                  autoPlay: true,
+                  viewportFraction: 0.85,
+                  onPageChanged: (index, reason) {
+                    _homeController.sliderIndex.value = index;
+                  }),
+              items: _homeController.categoryList.map((url) {
+                return PopularCategoryScreen(
+                  categoryName: url,
+                );
+              }).toList(),
+            ),
+          ],
+        );
+      }
+    });
   }
 }

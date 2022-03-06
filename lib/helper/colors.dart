@@ -4,6 +4,8 @@ const floatingBackgroundColor = Colors.orange;
 const offerBackgroundColor = Colors.red;
 const addToCartBtnTextColor = Colors.blue;
 const categoryShadowColor = Colors.black;
+const backgroundShadowColor = Colors.greenAccent;
+const secondaryBackgroundShadowColor = Colors.green;
 const favouriteCategoryColor = Colors.white;
 
 

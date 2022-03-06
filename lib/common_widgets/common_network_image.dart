@@ -24,35 +24,10 @@ class CommonNetworkImages {
         ),
       ),
       //TODO NEED to set proper placeholder
-      placeholder: (context, url) => Container(
-        padding: const EdgeInsets.all(5),
-        child:  Center(
-          child: Container(
-            // height: 220,
-            //   width: 150,
-              child: CircularProgressIndicator()),
-        ),
+      placeholder: (context, url) => const Center(
+        child: CircularProgressIndicator(),
       ),
-      errorWidget: (context, url, error) => Container(
-        height: errorHeight,//220
-        width: errorWidth,//200
-        decoration: BoxDecoration(
-          // image: DecorationImage( fit: BoxFit.cover, image: ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(radiusCorner!),
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-        child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            child: Image.asset(
-              "assets/icons/nope_not_here.png",
-              height: height,
-              width: width,
-              gaplessPlayback: true,
-              fit: BoxFit.cover,
-            )),
-      ),
+      errorWidget: (context, url, error) => Icon(Icons.error),
     );
   }
 }
