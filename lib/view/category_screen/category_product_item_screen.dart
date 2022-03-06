@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-
 class CategoryProductItemScreen extends StatelessWidget {
   CategoryWiseProductModel allCategoryProductModel = CategoryWiseProductModel();
   CategoryProductItemScreen({required this.allCategoryProductModel, Key? key})
@@ -108,6 +107,7 @@ class CategoryProductItemScreen extends StatelessWidget {
           allCategoryProductModel.rating!.rate == null
               ? Container()
               : RatingBar.builder(
+                  ignoreGestures: true,
                   itemSize: 13,
                   initialRating: double.parse(
                       allCategoryProductModel.rating!.rate.toString()),

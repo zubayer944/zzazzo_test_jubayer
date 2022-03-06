@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class DailyProductScreen extends StatelessWidget {
   ProductModel productModel = ProductModel();
   DailyProductScreen({required this.productModel, Key? key}) : super(key: key);
@@ -17,7 +16,9 @@ class DailyProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to( ProductDetailsScreen(productId: productModel.id,));
+        Get.to(ProductDetailsScreen(
+          productId: productModel.id,
+        ));
       },
       child: SizedBox(
         width: 265,
@@ -34,20 +35,18 @@ class DailyProductScreen extends StatelessWidget {
                   children: [
                     Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: CachedNetworkImage(
-                      imageUrl: "${productModel.image}",
-                      height: size.height * 0.35,
-                            width: size.width*0.45,
-                    ),
-                        )),
+                      padding: const EdgeInsets.all(5.0),
+                      child: CachedNetworkImage(
+                        imageUrl: "${productModel.image}",
+                        height: size.height * 0.35,
+                        width: size.width * 0.45,
+                      ),
+                    )),
                   ],
                 ),
               ),
               Positioned(top: 25, child: offerPercentage()),
-              Positioned(
-                  left: 10,
-                  top: 170, child: _addToCartAndFav()),
+              Positioned(left: 10, top: 170, child: _addToCartAndFav()),
             ],
           ),
         ),
@@ -78,13 +77,12 @@ class DailyProductScreen extends StatelessWidget {
   Widget _addToCartAndFav() {
     return Container(
       width: 245,
-      padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       color: Colors.white.withOpacity(0.9),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
-
             children: [
               CustomElevatedButton().customElevatedButton(
                   onTap: () {},
@@ -116,7 +114,6 @@ class DailyProductScreen extends StatelessWidget {
                   ),
                 ),
               )
-
             ],
           ),
           const SizedBox(
