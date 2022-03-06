@@ -1,4 +1,4 @@
-package com.example.zzazzo_test_jubayer
+package com.example.zubayerhamim.gmail.com
 
 import io.flutter.embedding.android.FlutterActivity
 

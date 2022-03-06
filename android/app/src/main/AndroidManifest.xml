@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.zzazzo_test_jubayer">
+    package="com.example.zubayerhamim.gmail.com">
    <application
-        android:label="zzazzo_test_jubayer"
+        android:label="Jubayer_Bin_Montasir"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

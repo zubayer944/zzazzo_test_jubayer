@@ -1,23 +1,25 @@
-import 'package:extended_image/extended_image.dart';
+import 'package:Jubayer_Bin_Montasir/common_widgets/custom_elevated_button.dart';
+import 'package:Jubayer_Bin_Montasir/common_widgets/font_style.dart';
+import 'package:Jubayer_Bin_Montasir/controller/product_details_controller.dart';
+import 'package:Jubayer_Bin_Montasir/helper/colors.dart';
+import 'package:Jubayer_Bin_Montasir/model/product_details_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/custom_elevated_button.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
-import 'package:zzazzo_test_jubayer/controller/home_controller.dart';
-import 'package:zzazzo_test_jubayer/helper/colors.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:zzazzo_test_jubayer/model/home_product_model.dart';
+
 
 class ProductDetailsBackgroundScreen extends StatelessWidget {
-  ProductModel productModel = ProductModel();
-  ProductDetailsBackgroundScreen({required this.productModel, Key? key})
+  int? productId;
+  ProductDetailsBackgroundScreen({required this.productId, Key? key})
       : super(key: key);
-  final HomeController _homeController = Get.put(HomeController());
+  final ProductDetailsController _productDetailsController =
+      Get.put(ProductDetailsController());
   Size size = Get.size;
   @override
   Widget build(BuildContext context) {
+    _productDetailsController.userProfileGetMethod(productId: productId!);
     return Center(
       child: Container(
           width: size.width * 1,
@@ -25,20 +27,27 @@ class ProductDetailsBackgroundScreen extends StatelessWidget {
             color: favouriteCategoryColor,
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _categoryBackgroundAppBar(),
-              const SizedBox(
-                height: 10,
-              ),
-              carouselImageForProductDetails(),
-              const SizedBox(
-                height: 10,
-              ),
-              _productVariation(context),
-            ],
-          )),
+          child: Obx(() {
+            return _productDetailsController.productDetailsDataLoading.value ==
+                    true
+                ? Center(child: CircularProgressIndicator())
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _categoryBackgroundAppBar(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      carouselImageForProductDetails(_productDetailsController
+                          .productDetailsById.value.image),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      _productVariation(context,
+                          _productDetailsController.productDetailsById.value),
+                    ],
+                  );
+          })),
     );
   }
 
@@ -60,7 +69,8 @@ class ProductDetailsBackgroundScreen extends StatelessWidget {
               child: Center(
                   child: Text(
                 "XE",
-                style: CustomFontStyle.poppins(fontSize: 20),
+                style: CustomFontStyle.poppins(
+                    fontSize: 20, fontWeight: FontWeight.w700),
               ))),
           Expanded(
             flex: 1,
@@ -85,166 +95,102 @@ class ProductDetailsBackgroundScreen extends StatelessWidget {
     );
   }
 
-  Widget carouselImageForProductDetails() {
+  Widget carouselImageForProductDetails(String? imageUrl) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: CarouselSlider(
-        options: CarouselOptions(
-            height: size.height * 0.50,
-            autoPlay: true,
-            viewportFraction: 1,
-            onPageChanged: (index, reason) {
-              _homeController.sliderIndex.value = index;
-            }),
-        items: _homeController.productList.map((url) {
-          return _coverImageWidget(value: url);
-        }).toList(),
+      child: CachedNetworkImage(
+        imageUrl: "$imageUrl",
+        height: size.height * 0.35,
+        width: size.width * 0.45,
       ),
     );
   }
 
-  Widget _coverImageWidget({ProductModel? value}) {
-    Size _size = Get.size;
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
-          child: FadeInImage(
-            width: double.infinity,
-            height: 300,
-            fit: BoxFit.fitHeight,
-            image: ExtendedNetworkImageProvider(
-              "${value!.image}",
-              cache: true,
-            ),
-            placeholder: const AssetImage(''),
-            placeholderErrorBuilder: (context, widget, stacktrace) {
-              return const Center(
-                child: CupertinoActivityIndicator(),
-              );
-            },
-            imageErrorBuilder: (context, widget, stacktrace) {
-              return Center(
-                child: Image.asset('assets/icons/nope_not_here.png'),
-              );
-            },
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            _homeController.productList.length,
-            (index) => buildDot(index: index),
-          ),
-        ),
-      ],
-    );
-  }
-
-  AnimatedContainer buildDot({required int index}) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      margin: const EdgeInsets.only(right: 5),
-      height: 10,
-      // width: _productDetailsController.sliderImageIndex.value == index ? 20 : 6,
+  Widget _productVariation(BuildContext context, ProductDetailsModel value) {
+    return Container(
       decoration: BoxDecoration(
-        color: _homeController.sliderIndex.value == index
-            ? Colors.red
-            : Color(0xFFD8D8D8),
-        borderRadius: BorderRadius.circular(3),
+        color: Colors.grey.shade200,
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(30.0),
+          topLeft: Radius.circular(30.0),
+        ),
       ),
-    );
-  }
-
-  Widget _productVariation(BuildContext context) {
-    return MediaQuery.removePadding(
-      context: context,
-      removeBottom: true,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(30.0),
-            topLeft: Radius.circular(30.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 24.0, right: 24, top: 24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 180,
+                  child: Text(
+                    "${value.title}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: CustomFontStyle.poppins(
+                        fontSize: 24, fontWeight: FontWeight.w700),
+                  ),
+                ),
+                _ratingBar(value),
+              ],
+            ),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0, right: 24, top: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 180,
-                    child: Text(
-                      "Nike Air Max 200",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: CustomFontStyle.poppins(
-                          fontSize: 24, fontWeight: FontWeight.w700),
-                    ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
+            child: Text(
+              "${value.description}",
+              maxLines: 2,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Row(
+              children: [
+                Text(
+                  "Size :",
+                  style: CustomFontStyle.poppins(
+                    color: Colors.grey,
                   ),
-                  _ratingBar(),
-                ],
-              ),
+                ),
+                _sizeBuildBody(),
+              ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 24,
-              ),
-              child: Text("Built for natural motion,the nike@ flex shoes"),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                children: [
-                  Text(
-                    "Size :",
-                    style: CustomFontStyle.poppins(
-                      color: Colors.grey,
-                    ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Available Color :",
+                  style: CustomFontStyle.poppins(
+                    color: Colors.grey,
                   ),
-                  _sizeBuildBody(),
-                ],
-              ),
+                ),
+                _colorBuildBody(),
+              ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Available Color :",
-                    style: CustomFontStyle.poppins(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  _colorBuildBody(),
-                ],
-              ),
-            ),
-            priceBar()
-          ],
-        ),
+          ),
+          priceBar(value)
+        ],
       ),
     );
   }
 
-  Widget _ratingBar() {
+  Widget _ratingBar(ProductDetailsModel value) {
     return Container(
       padding: const EdgeInsets.all(5),
       // width: 150,
@@ -252,8 +198,9 @@ class ProductDetailsBackgroundScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           RatingBar.builder(
+            ignoreGestures: true,
             itemSize: 10,
-            initialRating: 3,
+            initialRating: value.rating!.rate,
             minRating: 1,
             direction: Axis.horizontal,
             allowHalfRating: true,
@@ -270,7 +217,7 @@ class ProductDetailsBackgroundScreen extends StatelessWidget {
           const SizedBox(
             width: 5,
           ),
-          const Text("(3.5)"),
+          Text("(${value.rating!.count})"),
         ],
       ),
     );
@@ -358,7 +305,7 @@ class ProductDetailsBackgroundScreen extends StatelessWidget {
     );
   }
 
-  Widget priceBar() {
+  Widget priceBar(ProductDetailsModel value) {
     return Container(
       height: 100,
       // width: 350,
@@ -372,7 +319,7 @@ class ProductDetailsBackgroundScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "\$ 269",
+              "\$ ${value.price}",
               style: CustomFontStyle.poppins(
                   fontSize: 24, fontWeight: FontWeight.w700),
             ),

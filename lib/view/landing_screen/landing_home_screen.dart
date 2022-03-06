@@ -1,7 +1,8 @@
+import 'package:Jubayer_Bin_Montasir/common_widgets/custom_bottom_app_bar.dart';
+import 'package:Jubayer_Bin_Montasir/common_widgets/font_style.dart';
+import 'package:Jubayer_Bin_Montasir/helper/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/custom_bottom_app_bar.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
-import 'package:zzazzo_test_jubayer/helper/colors.dart';
+
 import 'landing_home_background.dart';
 
 class LandingHomeScreen extends StatelessWidget {

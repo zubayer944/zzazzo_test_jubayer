@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'package:Jubayer_Bin_Montasir/helper/api_url.dart';
+import 'package:Jubayer_Bin_Montasir/model/AllCategoryModel.dart';
 import 'package:http/http.dart' as http;
-import 'package:zzazzo_test_jubayer/helper/api_url.dart';
-import 'package:zzazzo_test_jubayer/model/AllCategoryModel.dart';
-import 'package:zzazzo_test_jubayer/model/home_product_model.dart';
+
 
 class CategoryProductRepository {
   Future<List<CategoryWiseProductModel>> getAllCategory(

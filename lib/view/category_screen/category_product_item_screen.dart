@@ -1,11 +1,12 @@
+import 'package:Jubayer_Bin_Montasir/common_widgets/font_style.dart';
+import 'package:Jubayer_Bin_Montasir/helper/colors.dart';
+import 'package:Jubayer_Bin_Montasir/model/AllCategoryModel.dart';
+import 'package:Jubayer_Bin_Montasir/view/product_details_screen/product_details_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:zzazzo_test_jubayer/helper/colors.dart';
-import 'package:zzazzo_test_jubayer/model/AllCategoryModel.dart';
-import 'package:zzazzo_test_jubayer/view/product_details_screen/product_details_screen.dart';
+
 
 class CategoryProductItemScreen extends StatelessWidget {
   CategoryWiseProductModel allCategoryProductModel = CategoryWiseProductModel();
@@ -18,7 +19,9 @@ class CategoryProductItemScreen extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            // Get.to(ProductDetailsScreen(productModel: ,));
+            Get.to(ProductDetailsScreen(
+              productId: allCategoryProductModel.id,
+            ));
           },
           child: Card(
             shape: const RoundedRectangleBorder(

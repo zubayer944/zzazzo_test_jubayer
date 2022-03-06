@@ -1,11 +1,12 @@
+import 'package:Jubayer_Bin_Montasir/common_widgets/font_style.dart';
+import 'package:Jubayer_Bin_Montasir/controller/home_controller.dart';
+import 'package:Jubayer_Bin_Montasir/helper/colors.dart';
+import 'package:Jubayer_Bin_Montasir/view/landing_screen/popular_category_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
-import 'package:zzazzo_test_jubayer/controller/home_controller.dart';
-import 'package:zzazzo_test_jubayer/helper/colors.dart';
-import 'package:zzazzo_test_jubayer/view/landing_screen/popular_category_screen.dart';
+
 import 'dailly_product_screen.dart';
 
 class LandingHomeBackground extends StatelessWidget {
@@ -90,7 +91,7 @@ class LandingHomeBackground extends StatelessWidget {
         height: 45,
         width: 350,
         decoration: BoxDecoration(
-          color: searchBoxBackgroundColor,
+          color: searchBoxBackgroundColor.withOpacity(0.3),
           // border: Border.all(color: Colors.red),
           borderRadius: BorderRadius.circular(10),
         ),

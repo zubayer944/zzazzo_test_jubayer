@@ -1,8 +1,9 @@
+import 'package:Jubayer_Bin_Montasir/common_widgets/common_network_image.dart';
+import 'package:Jubayer_Bin_Montasir/common_widgets/font_style.dart';
+import 'package:Jubayer_Bin_Montasir/controller/all_category_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/common_network_image.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
-import 'package:zzazzo_test_jubayer/controller/all_category_controller.dart';
+
 
 
 import 'category_product_item_screen.dart';

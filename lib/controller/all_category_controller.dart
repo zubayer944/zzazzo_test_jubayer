@@ -1,6 +1,7 @@
+import 'package:Jubayer_Bin_Montasir/model/AllCategoryModel.dart';
+import 'package:Jubayer_Bin_Montasir/repository/category_product_repository.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/model/AllCategoryModel.dart';
-import 'package:zzazzo_test_jubayer/repository/category_product_repository.dart';
+
 
 class AllCategoryController extends GetxController {
   RxList<CategoryWiseProductModel> allCategoryWiseProductList =

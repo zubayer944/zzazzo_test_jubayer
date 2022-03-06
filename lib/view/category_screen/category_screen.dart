@@ -1,10 +1,10 @@
+import 'package:Jubayer_Bin_Montasir/common_widgets/font_style.dart';
+import 'package:Jubayer_Bin_Montasir/helper/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/custom_bottom_app_bar.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
-import 'package:zzazzo_test_jubayer/helper/colors.dart';
-import 'package:zzazzo_test_jubayer/view/category_screen/custom_app_bar_category_screen.dart';
+
 
 import 'category_background_screen.dart';
+import 'custom_app_bar_category_screen.dart';
 
 class CategoryScreen extends StatelessWidget {
   String? categoryName;

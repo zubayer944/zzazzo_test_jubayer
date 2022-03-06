@@ -1,5 +1,6 @@
+import 'package:Jubayer_Bin_Montasir/common_widgets/font_style.dart';
 import 'package:flutter/material.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
+
 
 class CustomElevatedButton {
   Widget customElevatedButton(
@@ -28,7 +29,7 @@ class CustomElevatedButton {
           ),
         ),
         label: btnName == ""
-            ? SizedBox()
+            ? const SizedBox()
             : Text(
                 btnName.toString(),
                 style: CustomFontStyle.poppins(

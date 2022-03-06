@@ -1,12 +1,13 @@
+import 'package:Jubayer_Bin_Montasir/common_widgets/custom_elevated_button.dart';
+import 'package:Jubayer_Bin_Montasir/common_widgets/font_style.dart';
+import 'package:Jubayer_Bin_Montasir/helper/colors.dart';
+import 'package:Jubayer_Bin_Montasir/model/home_product_model.dart';
+import 'package:Jubayer_Bin_Montasir/view/product_details_screen/product_details_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/custom_elevated_button.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
-import 'package:zzazzo_test_jubayer/helper/colors.dart';
-import 'package:zzazzo_test_jubayer/model/home_product_model.dart';
-import 'package:zzazzo_test_jubayer/view/product_details_screen/product_details_screen.dart';
+
 
 class DailyProductScreen extends StatelessWidget {
   ProductModel productModel = ProductModel();
@@ -16,7 +17,7 @@ class DailyProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to( ProductDetailsScreen(productModel: productModel,));
+        Get.to( ProductDetailsScreen(productId: productModel.id,));
       },
       child: SizedBox(
         width: 265,

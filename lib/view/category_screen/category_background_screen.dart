@@ -1,11 +1,13 @@
+import 'package:Jubayer_Bin_Montasir/common_widgets/font_style.dart';
+import 'package:Jubayer_Bin_Montasir/controller/all_category_controller.dart';
+import 'package:Jubayer_Bin_Montasir/controller/home_controller.dart';
+import 'package:Jubayer_Bin_Montasir/helper/colors.dart';
+import 'package:Jubayer_Bin_Montasir/model/AllCategoryModel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/common_widgets/font_style.dart';
-import 'package:zzazzo_test_jubayer/controller/all_category_controller.dart';
-import 'package:zzazzo_test_jubayer/controller/home_controller.dart';
-import 'package:zzazzo_test_jubayer/helper/colors.dart';
-import 'package:zzazzo_test_jubayer/model/AllCategoryModel.dart';
-import 'package:zzazzo_test_jubayer/view/category_screen/category_list_screen.dart';
+
+import 'category_list_screen.dart';
 import 'category_product_item_screen.dart';
 
 class CategoryBackGroundScreen extends StatelessWidget {
@@ -23,7 +25,6 @@ class CategoryBackGroundScreen extends StatelessWidget {
     Size size = Get.size;
     return Center(
       child: Container(
-          // height: size.height,
           width: size.width * 1,
           decoration: const BoxDecoration(
             color: txtBackgroundColor,
@@ -63,7 +64,8 @@ class CategoryBackGroundScreen extends StatelessWidget {
             child: Center(
                 child: Text(
               "XE",
-              style: CustomFontStyle.poppins(fontSize: 20),
+              style: CustomFontStyle.poppins(
+                  fontSize: 20, fontWeight: FontWeight.w700),
             ))),
         const Expanded(flex: 1, child: Icon(Icons.search)),
       ],
@@ -92,9 +94,6 @@ class CategoryBackGroundScreen extends StatelessWidget {
         child: DropdownButton<int>(
           hint: const Text("Sort by"),
           underline: DropdownButtonHideUnderline(child: Container()),
-          // decoration: const InputDecoration(
-          //     disabledBorder: InputBorder.none,
-          //   ),
           value: 1,
           onChanged: (int) {},
           items: <DropdownMenuItem<int>>[

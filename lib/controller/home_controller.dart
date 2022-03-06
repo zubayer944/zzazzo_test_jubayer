@@ -1,6 +1,8 @@
+import 'package:Jubayer_Bin_Montasir/model/home_product_model.dart';
+import 'package:Jubayer_Bin_Montasir/repository/home_page_repository.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/model/home_product_model.dart';
-import 'package:zzazzo_test_jubayer/repository/home_page_repository.dart';
+
+
 
 class HomeController extends GetxController {
   RxList<ProductModel> productList = <ProductModel>[].obs;

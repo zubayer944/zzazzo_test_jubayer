@@ -1,6 +1,7 @@
+import 'package:Jubayer_Bin_Montasir/view/landing_screen/landing_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zzazzo_test_jubayer/view/landing_screen/landing_home_screen.dart';
+
 
 class CustomAppBarCategoryScreen extends StatelessWidget {
   const CustomAppBarCategoryScreen({Key? key}) : super(key: key);
